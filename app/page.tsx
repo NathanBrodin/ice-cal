@@ -37,7 +37,7 @@ export default async function Home({ searchParams }: Props) {
   }
 
   return (
-    <div className="w-screen h-screen bg-black font-geist text-white flex items-center justify-center p-2">
+    <div className="w-screen h-[100dvh] bg-black font-geist text-white flex items-center justify-center p-2">
       <div className="w-full md:w-2/3  rounded-[32px] border border-stone-700 bg-stone-800 p-[2px]">
         <div className="w-full h-full rounded-[30px] border border-stone-700 bg-black flex flex-col">
           <div className="w-full flex flex-col justify-center items-center mt-4">
