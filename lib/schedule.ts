@@ -72,9 +72,13 @@ export function formatSchedule(items: ScheduleItem[]) {
     const [startHour, startMinute] = item.start.split(":").map(Number);
     const [endHour, endMinute] = item.final.split(":").map(Number);
 
-    // Create Date objects for start and end times
-    const startTime = new Date(year, month - 1, day, startHour, startMinute);
-    const endTime = new Date(year, month - 1, day, endHour, endMinute);
+    // Create the dates with the Swedish timezone
+    const startTime = new Date(
+      `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(startHour).padStart(2, "0")}:${String(startMinute).padStart(2, "0")}:00+01:00`,
+    );
+    const endTime = new Date(
+      `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(endHour).padStart(2, "0")}:${String(endMinute).padStart(2, "0")}:00+01:00`,
+    );
 
     schedule.push({
       start: startTime.toISOString(),
