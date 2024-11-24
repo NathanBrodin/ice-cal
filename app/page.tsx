@@ -41,7 +41,9 @@ export default async function Home({ searchParams }: Props) {
       <div className="w-full md:w-2/3  rounded-[32px] border border-stone-700 bg-stone-800 p-[2px]">
         <div className="w-full h-full rounded-[30px] border border-stone-700 bg-black flex flex-col">
           <div className="w-full flex flex-col justify-center items-center mt-4">
-            <h1 className="font-display text-4xl">Ice Rink Calendar</h1>
+            <h1 className="font-display text-2xl sm:text-4xl">
+              Ice Rink Calendar
+            </h1>
             <p className="text-stone-400">Brandcode Center</p>
           </div>
           <Separator className="bg-stone-700 mt-4" />
@@ -49,15 +51,15 @@ export default async function Home({ searchParams }: Props) {
             <div className="absolute pointer-events-none z-0 inset-0 h-full w-full  bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
             <div className="z-10 bg-stone-900 rounded-xl border border-stone-700">
               <div className="z-10 p-4 bg-black overflow-clip rounded-t-xl">
-                <h2 className="text-md font-semibold leading-none tracking-tight">
+                <h2 className="text-sm sm:text-md font-semibold leading-none tracking-tight">
                   Add Brandcode Center&apos;s Schedule to Your Calendar
                 </h2>
-                <p className="text-sm text-stone-400">
+                <p className="text-xs sm:text-sm text-stone-400">
                   Choose your favorite skating activity to stay updated!
                 </p>
               </div>
               <Separator className="bg-stone-700 z-10" />
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 z-10 p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 z-10 p-3 sm:p-4">
                 <Link
                   href={`?${getUpdatedSearchParams(BookingType.PUBLIC_SKATING)}`}
                   className={`rounded-xl border border-stone-700 bg-black flex flex-col items-center p-4 transition-colors hover:bg-stone-900
@@ -105,7 +107,7 @@ export default async function Home({ searchParams }: Props) {
                 />
                 <CopyButton content={displaySearchParams()} />
               </div>
-              <p className="text-sm text-stone-400 italic">
+              <p className="text-xs sm:text-sm text-stone-400 italic">
                 Copy and paste the following address into your calendar app to
                 subscribe
               </p>
