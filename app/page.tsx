@@ -6,16 +6,24 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { BookingType } from "@/lib/schedule";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [selectedTypes, setSelectedTypes] = useState<BookingType[]>([]);
+  const [subscriptionUrl, setSubscriptionUrl] = useState("");
 
-  function getSubscriptionUrl() {
+  useEffect(() => {
+    // Update the subscription URL when selectedTypes changes
     const baseUrl = `${window.location.origin}/api/schedule`;
     const params = new URLSearchParams();
     selectedTypes.forEach((type) => params.append("type", type));
-    return `${baseUrl}?${params.toString()}`;
+    setSubscriptionUrl(`${baseUrl}?${params.toString()}`);
+  }, [selectedTypes]);
+
+  function handleCopy() {
+    if (typeof navigator !== "undefined") {
+      navigator.clipboard.writeText(subscriptionUrl);
+    }
   }
 
   return (
@@ -82,14 +90,12 @@ export default function Home() {
               <div className="flex w-full  items-end space-x-2">
                 <Input
                   type="text"
-                  value={getSubscriptionUrl()}
+                  value={subscriptionUrl}
                   readOnly
                   className="w-full flex-1 focus-visible:ring-none font-mono"
                 />
                 <Button
-                  onClick={() =>
-                    navigator.clipboard.writeText(getSubscriptionUrl())
-                  }
+                  onClick={handleCopy}
                   type="button"
                   className="bg-[#b3b1de]"
                 >
