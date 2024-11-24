@@ -1,29 +1,40 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { CopyIcon } from "@/components/ui/copy";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { BookingType } from "@/lib/schedule";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 
-export default function Home() {
-  const [selectedTypes, setSelectedTypes] = useState<BookingType[]>([]);
-  const [subscriptionUrl, setSubscriptionUrl] = useState("");
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-  useEffect(() => {
-    // Update the subscription URL when selectedTypes changes
-    const baseUrl = `${window.location.origin}/api/schedule`;
+export default async function Home({ searchParams }: Props) {
+  const currSearchParams = await searchParams;
+
+  const selectedTypes = currSearchParams.type
+    ? (Array.isArray(currSearchParams.type)
+        ? currSearchParams.type
+        : [currSearchParams.type]
+      ).filter((type): type is BookingType =>
+        Object.values(BookingType).includes(type as BookingType),
+      )
+    : [];
+
+  const getUpdatedSearchParams = (type: BookingType) => {
+    const params = new URLSearchParams();
+    const newTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type];
+
+    newTypes.forEach((t) => params.append("type", t));
+    return params.toString();
+  };
+
+  function displaySearchParams() {
     const params = new URLSearchParams();
     selectedTypes.forEach((type) => params.append("type", type));
-    setSubscriptionUrl(`${baseUrl}?${params.toString()}`);
-  }, [selectedTypes]);
-
-  function handleCopy() {
-    if (typeof navigator !== "undefined") {
-      navigator.clipboard.writeText(subscriptionUrl);
-    }
+    return "https://ice-cal.brodin.dev/api/schedule?" + params.toString();
   }
 
   return (
@@ -46,59 +57,52 @@ export default function Home() {
               </p>
             </div>
             <Separator className="bg-stone-700 z-10" />
-            <ToggleGroup
-              type="multiple"
-              className="z-10"
-              value={selectedTypes}
-              onValueChange={(value: BookingType[]) => {
-                if (value) setSelectedTypes(value);
-              }}
-            >
-              <ToggleGroupItem
-                value="Public Skating"
-                className="rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  data-[state=on]:ring-1 data-[state=on]:ring-[#b3b1de] data-[state=on]:bg-stone-700 "
+            <div className="grid grid-cols-3 gap-4 z-10">
+              <Link
+                href={`?${getUpdatedSearchParams(BookingType.PUBLIC_SKATING)}`}
+                className={`rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700
+                        ${selectedTypes.includes(BookingType.PUBLIC_SKATING) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
               >
                 <h3 className="font-display text-xl mb-2">Public Skating</h3>
                 <p className="text-xs font-normal leading-snug text-stone-400">
                   Glide across the ice at Brandcode Center&apos;s indoor rink
                   and show off your best moves. Fun for everyone!
                 </p>
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="Outdoor Skating"
-                className="rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  data-[state=on]:ring-1 data-[state=on]:ring-[#b3b1de] data-[state=on]:bg-stone-700 "
+              </Link>
+              <Link
+                href={`?${getUpdatedSearchParams(BookingType.OUTDOOR_SKATING)}`}
+                className={`rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700
+                        ${selectedTypes.includes(BookingType.OUTDOOR_SKATING) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
               >
                 <h3 className="font-display text-xl mb-2">Outdoor Skating</h3>
                 <p className="text-xs font-normal leading-snug text-stone-400">
                   Embrace the fresh air as you skate under the open sky. Bring
                   your hockey stick for extra fun!
                 </p>
-              </ToggleGroupItem>
-              <ToggleGroupItem
-                value="Hockey"
-                className="rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  data-[state=on]:ring-1 data-[state=on]:ring-[#b3b1de] data-[state=on]:bg-stone-700 "
+              </Link>
+
+              <Link
+                href={`?${getUpdatedSearchParams(BookingType.HOCKEY)}`}
+                className={`rounded-xl border border-stone-700 bg-stone-800 flex flex-col items-center p-4 transition-colors hover:bg-stone-700
+                        ${selectedTypes.includes(BookingType.HOCKEY) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
               >
                 <h3 className="font-display text-xl mb-2">Hockey</h3>
                 <p className="text-xs font-normal leading-snug text-stone-400">
                   Ready for action? Join your friends for a thrilling game of
                   hockey.
                 </p>
-              </ToggleGroupItem>
-            </ToggleGroup>
+              </Link>
+            </div>
             <Separator className="bg-stone-700 z-10" />
             <div className="z-10 w-full flex flex-col gap-2 ">
               <div className="flex w-full  items-end space-x-2">
                 <Input
                   type="text"
-                  value={subscriptionUrl}
+                  value={displaySearchParams()}
                   readOnly
                   className="w-full flex-1 focus-visible:ring-none font-mono"
                 />
-                <Button
-                  onClick={handleCopy}
-                  type="button"
-                  className="bg-[#b3b1de]"
-                >
+                <Button type="button" className="bg-[#b3b1de]">
                   Copy <CopyIcon />
                 </Button>
               </div>
