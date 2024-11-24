@@ -13,6 +13,11 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const calSans = localFont({
+  src: "./fonts/CalSans-SemiBold.woff2",
+  variable: "--font-calsans",
+});
+
 export const metadata: Metadata = {
   title: "Ice Calendar",
   description: "Ice Calendar",
@@ -26,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${calSans.variable} antialiased dark`}
       >
         {children}
       </body>

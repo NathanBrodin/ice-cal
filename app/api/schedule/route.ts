@@ -1,8 +1,19 @@
-import { formatSchedule, ScheduleItem } from "@/lib/schedule";
+import { BookingType, formatSchedule, ScheduleItem } from "@/lib/schedule";
 import * as cheerio from "cheerio";
+import { type NextRequest } from "next/server";
 import ical, { ICalCalendarMethod } from "ical-generator";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+
+  // Get the booking types from query parameters
+  const types = searchParams.getAll("type");
+
+  // Validate booking types
+  const validTypes = types.filter((type): type is BookingType =>
+    Object.values(BookingType).includes(type as BookingType),
+  );
+
   // Fetch the schedule data
   const response = await fetch(
     "https://exportservice.actorsmartbook.se/ExportGridStyle.aspx?com=58a26dde-d78e-4176-b4b3-5c236bbc9f1e&con=fe2bd241-0836-4aaf-82e1-27518f6d17cb",
@@ -31,9 +42,16 @@ export async function GET() {
     });
   });
 
-  const cleanedSchedule = formatSchedule(schedule);
+  let cleanedSchedule = formatSchedule(schedule);
 
-  const calendar = ical({ name: "Brandcode Center - Ice Rink" });
+  // Filter schedule if booking types are specified
+  if (validTypes.length > 0) {
+    cleanedSchedule = cleanedSchedule.filter((item) =>
+      validTypes.includes(item.summary),
+    );
+  }
+
+  const calendar = ical({ name: "Ice Rink - Brandcode Center" });
 
   // A method is required for outlook to display event as an invitation
   calendar.method(ICalCalendarMethod.PUBLISH);
