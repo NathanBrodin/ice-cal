@@ -20,8 +20,8 @@ const calSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Ice Calendar",
-  description: "Ice Calendar",
+  title: "Brandcode Center calendar",
+  description: "Ice Rink calendar of Brandcode center - NON OFFICIAL",
 };
 
 export default function RootLayout({
