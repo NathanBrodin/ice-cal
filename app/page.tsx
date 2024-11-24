@@ -66,7 +66,7 @@ export default async function Home({ searchParams }: Props) {
                         ${selectedTypes.includes(BookingType.PUBLIC_SKATING) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
                 >
                   <h3 className="font-display text-xl mb-2">Public Skating</h3>
-                  <p className="text-xs font-normal leading-snug text-stone-400">
+                  <p className="text-xs font-normal leading-snug text-stone-400 text-center">
                     Glide across the ice at Brandcode Center&apos;s indoor rink
                     and show off your best moves. Fun for everyone!
                   </p>
@@ -77,7 +77,7 @@ export default async function Home({ searchParams }: Props) {
                         ${selectedTypes.includes(BookingType.OUTDOOR_SKATING) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
                 >
                   <h3 className="font-display text-xl mb-2">Outdoor Skating</h3>
-                  <p className="text-xs font-normal leading-snug text-stone-400">
+                  <p className="text-xs font-normal leading-snug text-stone-400 text-center">
                     Embrace the fresh air as you skate under the open sky. Bring
                     your hockey stick for extra fun!
                   </p>
@@ -89,7 +89,7 @@ export default async function Home({ searchParams }: Props) {
                         ${selectedTypes.includes(BookingType.HOCKEY) ? "ring-1 ring-[#b3b1de] bg-stone-700" : ""}`}
                 >
                   <h3 className="font-display text-xl mb-2">Hockey</h3>
-                  <p className="text-xs font-normal leading-snug text-stone-400">
+                  <p className="text-xs font-normal leading-snug text-stone-400 text-center">
                     Ready for action? Join your friends for a thrilling game of
                     hockey.
                   </p>

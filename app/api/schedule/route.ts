@@ -3,6 +3,9 @@ import * as cheerio from "cheerio";
 import { type NextRequest } from "next/server";
 import ical, { ICalCalendarMethod } from "ical-generator";
 
+// 2 days
+export const revalidate = 172800;
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
