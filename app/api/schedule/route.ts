@@ -2,7 +2,7 @@ import { formatSchedule, ScheduleItem } from "@/lib/schedule";
 import * as cheerio from "cheerio";
 import ical, { ICalCalendarMethod } from "ical-generator";
 
-export async function GET(request: Request) {
+export async function GET() {
   // Fetch the schedule data
   const response = await fetch(
     "https://exportservice.actorsmartbook.se/ExportGridStyle.aspx?com=58a26dde-d78e-4176-b4b3-5c236bbc9f1e&con=fe2bd241-0836-4aaf-82e1-27518f6d17cb",
@@ -17,6 +17,7 @@ export async function GET(request: Request) {
   const schedule: ScheduleItem[] = [];
 
   // Iterate through each row and extract data
+  // eslint-disable-next-line
   rows.each((index: number, row: any) => {
     const cells = $(row).find("td");
     schedule.push({
