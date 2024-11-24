@@ -9,6 +9,16 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "nothern-lights-kf": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        "nothern-lights":
+          "nothern-lights-kf 23s cubic-bezier(.15, 0, .85, 1) infinite alternate",
+      },
       fontFamily: {
         display: ["var(--font-calsans)"],
         geist: ["var(--font-geist-sans)"],
